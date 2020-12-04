@@ -78,16 +78,14 @@
   (slurp path))
 
 (defn parse-data [data]
-  (let [rows (-> data
-                 (s/split-lines))
+  (let [rows (-> data (s/split-lines))
         row-length (count (first rows))
         row-count (count rows)]
     {:rows rows
      :row-length row-length
      :row-count row-count}))
 
-(defn count-trees
-  [{:keys [rows row-length row-count]} [dx dy]]
+(defn count-trees [{:keys [rows row-length row-count]} [dx dy]]
   (->> (map #(= \# (nth %1 (mod %2 row-length)))
             (take-nth dy rows)
             (range 0 (* dx row-count) dx))
