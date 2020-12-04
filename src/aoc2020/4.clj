@@ -130,6 +130,17 @@
        (map #(into {} %))
        (map #(w/keywordize-keys %))))
 
+;; part one specs
+;; (s/def ::byr string?)
+;; (s/def ::iyr string?)
+;; (s/def ::eyr string?)
+;; (s/def ::hgt string?)
+;; (s/def ::hcl string?)
+;; (s/def ::ecl string?)
+;; (s/def ::pid string?)
+;; (s/def ::cid string?)
+
+;; part two specs
 (s/def ::byr #(re-matches #"^(19[2-9][0-9]|200[0-2])$" %))
 (s/def ::iyr #(re-matches #"^(201[0-9]|2020)$" %))
 (s/def ::eyr #(re-matches #"^(202[0-9]|2030)$" %))
@@ -138,6 +149,7 @@
 (s/def ::ecl #(re-matches #"^(amb|blu|brn|gry|grn|hzl|oth)$" %))
 (s/def ::pid #(re-matches #"^[0-9]{9}$" %))
 (s/def ::cid string?)
+
 (s/def ::passport (s/keys :req-un [::byr ::iyr ::eyr ::hgt ::hcl ::ecl ::pid]
                           :opt-un [::cid]))
 
