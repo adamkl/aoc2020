@@ -87,10 +87,10 @@
      :row-count row-count}))
 
 (defn count-trees
-  [{:keys [rows row-length row-count]} [r-step d-step]]
+  [{:keys [rows row-length row-count]} [dx dy]]
   (->> (map #(= \# (nth %1 (mod %2 row-length)))
-            (take-nth d-step rows)
-            (range 0 (* r-step row-count) r-step))
+            (take-nth dy rows)
+            (range 0 (* dx row-count) dx))
        (filter true?)
        (count)))
 
