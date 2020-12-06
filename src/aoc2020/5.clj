@@ -57,26 +57,11 @@
   (-> data
       (str/split-lines)))
 
-(def ops {\F #(take (/ (count %) 2) %)
-          \B #(drop (/ (count %) 2) %)
-          \L #(take (/ (count %) 2) %)
-          \R #(drop (/ (count %) 2) %)})
-
-(defn search [code init-range]
-  (loop [[op & rest] code
-         candidates init-range]
-    (if-not op
-      (first candidates)
-      (recur rest
-             ((get ops op) candidates)))))
-
-(def rows (range 0 128))
-(def cols (range 0 8))
-(defn find-seat [bp-code]
-  (let [row (search (take 7 bp-code) rows)
-        seat (search (drop 7 bp-code) cols)
-        id (+ (* 8 row) seat)]
-    [id row seat]))
+(defn get-id [bp]
+  (-> bp
+      (str/replace #"B|R" "1")
+      (str/replace #"F|L" "0")
+      (Integer/parseInt 2)))
 
 (defn find-missing-id [sorted-ids]
   (loop [[fst & rest] sorted-ids]
@@ -95,8 +80,7 @@ BBFFBBFRLL")
 
   (->> data
        parse-data
-       (map find-seat)
-       (map first)
+       (map get-id)
        (apply max))
 
   ;; 1
@@ -104,16 +88,14 @@ BBFFBBFRLL")
   (->> path
        slurp
        parse-data
-       (map find-seat)
-       (map first)
+       (map get-id)
        (apply max))
 
   ;; 2
   (->> path
        slurp
        parse-data
-       (map find-seat)
-       (map first)
+       (map get-id)
        sort
        find-missing-id)
 
